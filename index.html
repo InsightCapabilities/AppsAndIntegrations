@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="hero-light">
 <head>
@@ -487,22 +488,36 @@ document.getElementById('recognitionPage').innerHTML = `
 /* ============ PAGE 6 — ORG STRUCTURE with Profile Pictures ============ */
 /* Profile pics loaded from M365 Graph API pattern with graceful fallback to initials */
 const orgPeople = [
-  {name:'Mohan Subrahmanya',initials:'MS',email:'Mohan.Subrahmanya@insight.com',title:'Country Leader India',loc:'IN-Bangalore',grad:'linear-gradient(135deg,#D30E8C,#ff6bb5)',cls:'leader'},
-  {name:'Deepak Kaushik',initials:'DK',email:'Deepak.Kaushik@insight.com',title:'Dir Svcs & India Head \u2014 ModApps and Cloud',loc:'IN-Gurugram | Apps & Integration',grad:'linear-gradient(135deg,#ff6bb5,#a78bfa)',cls:'highlight'},
-  {name:'Amit Gupta',initials:'AG',email:'Amit.Gupta3@insight.com',title:'Enterprise Architect',loc:'IN-Gurugram',grad:'linear-gradient(135deg,#ff6bb5,#D30E8C)'},
-  {name:'Deepak Singh',initials:'DS',email:'Deepak.Singh2@insight.com',title:'Architect II',loc:'IN-Gtr Noida',grad:'linear-gradient(135deg,#a78bfa,#582873)'},
-  {name:'Nipun Saini',initials:'NS',email:'Nipun.Saini@insight.com',title:'Practice Manager',loc:'IN-Gtr Noida',grad:'linear-gradient(135deg,#E08E1D,#ff8c42)'},
-  {name:'Patanjali Kashyap',initials:'PK',email:'Patanjali.Kashyap@insight.com',title:'Sr Practice Manager',loc:'IN-Gurugram',grad:'linear-gradient(135deg,#7cc4fa,#4F93D9)'},
-  {name:'Pawan Kumar',initials:'PK',email:'Pawan.Kumar2@insight.com',title:'Architect II',loc:'IN-Gurugram',grad:'linear-gradient(135deg,#0FA968,#00c9a7)'},
-  {name:'Ritesh Arora',initials:'RA',email:'Ritesh.Arora@insight.com',title:'Solutions Architect',loc:'IN-Gurugram',grad:'linear-gradient(135deg,#00c9a7,#0FA968)'},
-  {name:'Vidyasagar Anumolu',initials:'VA',email:'Vidyasagar.Anumolu@insight.com',title:'Senior Practice Manager',loc:'IN-Gtr Noida',grad:'linear-gradient(135deg,#6C7CFC,#4F93D9)'}
+  {name:'Mohan Subrahmanya',initials:'MS',email:'Mohan.Subrahmanya@insight.com',title:'Country Leader India',loc:'IN-Bangalore',grad:'linear-gradient(135deg,#D30E8C,#ff6bb5)',cls:'leader',hasPhoto:true},
+  {name:'Deepak Kaushik',initials:'DK',email:'Deepak.Kaushik@insight.com',title:'Dir Svcs & India Head \u2014 ModApps and Cloud',loc:'IN-Gurugram | Apps & Integration',grad:'linear-gradient(135deg,#ff6bb5,#a78bfa)',cls:'highlight',hasPhoto:true},
+  {name:'Amit Gupta',initials:'AG',email:'Amit.Gupta@insight.com',title:'Enterprise Architect',loc:'IN-Gurugram',grad:'linear-gradient(135deg,#ff6bb5,#D30E8C)',hasPhoto:true},
+  {name:'Deepak Singh',initials:'DS',email:'Deepak.Singh@insight.com',title:'Architect II',loc:'IN-Gtr Noida',grad:'linear-gradient(135deg,#a78bfa,#582873)',hasPhoto:true},
+  {name:'Nipun Saini',initials:'NS',email:'Nipun.Saini@insight.com',title:'Practice Manager',loc:'IN-Gtr Noida',grad:'linear-gradient(135deg,#E08E1D,#ff8c42)',hasPhoto:false},
+  {name:'Patanjali Kashyap',initials:'PK',email:'Patanjali.Kashyap@insight.com',title:'Sr Practice Manager',loc:'IN-Gurugram',grad:'linear-gradient(135deg,#7cc4fa,#4F93D9)',hasPhoto:false},
+  {name:'Pawan Kumar',initials:'PK',email:'Pawan.Kumar@insight.com',title:'Architect II',loc:'IN-Gurugram',grad:'linear-gradient(135deg,#0FA968,#00c9a7)',hasPhoto:true},
+  {name:'Ritesh Arora',initials:'RA',email:'Ritesh.Arora@insight.com',title:'Solutions Architect',loc:'IN-Gurugram',grad:'linear-gradient(135deg,#00c9a7,#0FA968)',hasPhoto:true},
+  {name:'Vidyasagar Anumolu',initials:'VA',email:'Vidyasagar.Anumolu@insight.com',title:'Senior Practice Manager',loc:'IN-Gtr Noida',grad:'linear-gradient(135deg,#6C7CFC,#4F93D9)',hasPhoto:true}
 ];
 
 function orgAvatar(p){
-  // Use Outlook/M365 profile photo URL pattern
-  const photoUrl = `https://outlook.office365.com/owa/service.svc/s/GetPersonaPhoto?email=${p.email}&UA=0&size=HR96x96`;
+  /* 
+   * Profile Photo Loading:
+   * - People WITH photos (hasPhoto:true): Load from SharePoint → OWA fallback → Initials
+   * - People WITHOUT photos (Nipun Saini, Patanjali Kashyap): Show initials directly
+   *
+   * SharePoint userphoto.aspx works with the browser's existing SSO session
+   * on the Insight corporate network/VPN — no API tokens needed.
+   */
+  if(!p.hasPhoto){
+    return `<div class="avatar" style="background:${p.grad};"><span class="initials" style="display:flex;">${p.initials}</span></div>`;
+  }
+  const spPhoto = `https://insightonline.sharepoint.com/_layouts/15/userphoto.aspx?size=L&accountname=${p.email}`;
+  const owaPhoto = `https://outlook.office365.com/owa/service.svc/s/GetPersonaPhoto?email=${p.email}&UA=0&size=HR96x96`;
   return `<div class="avatar" style="background:${p.grad};">
-    <img src="${photoUrl}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+    <img src="${spPhoto}" alt="${p.name}" 
+         referrerpolicy="no-referrer-when-downgrade"
+         onerror="if(this.dataset.retry){this.style.display='none';this.nextElementSibling.style.display='flex';}else{this.dataset.retry='1';this.src='${owaPhoto}';}" 
+         style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
     <span class="initials" style="display:none;">${p.initials}</span>
   </div>`;
 }
