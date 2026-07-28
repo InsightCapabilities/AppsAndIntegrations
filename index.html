@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" class="hero-light">
 <head>
@@ -454,7 +453,10 @@ color:var(--footer-text);padding:56px 48px 0;border-top:1px solid var(--footer-l
 
 <div class="topbar">
 <div class="brand">
-<img src="https://companieslogo.com/img/orig/NSIT-65c6ad49.png?t=1743265694" alt="NSIT Logo" width="25" height="25">
+<svg class="brand-logo" viewBox="0 0 600 120" xmlns="http://www.w3.org/2000/svg" aria-label="Insight">
+  <text x="0" y="90" font-family="Sora, Arial, sans-serif" font-weight="800" font-size="96" fill="var(--topbar-brand)" letter-spacing="-2">insight</text>
+  <rect x="485" y="18" width="14" height="14" rx="3" fill="#D30E8C"/>
+</svg>
 <span class="brand-text">App &amp; Integration</span>
 </div>
 <div class="pagenav">
@@ -1048,7 +1050,7 @@ document.getElementById('storyGrid').innerHTML = featuredStories.map(s=>`
 <h4>${s.title}</h4><p>${s.desc}</p><span class="tag-pill">${s.tag}</span>
 </div>`).join('');
 
-const stats = [{icon:'users',value:'50+',label:'Projects Delivered'},{icon:'users',value:'25+',label:'Happy Clients'},{icon:'building',value:'10+',label:'Industries Served'},{icon:'star',value:'98%',label:'Client Satisfaction'}];
+const stats = [{icon:'users',value:'200+',label:'Projects Delivered'},{icon:'users',value:'50+',label:'Happy Clients'},{icon:'building',value:'10+',label:'Industries Served'},{icon:'star',value:'98%',label:'Client Satisfaction'}];
 document.getElementById('statBar').innerHTML = stats.map(s=>`
 <div class="stat"><div class="icon-tile">${ICONS[s.icon]}</div><div><b>${s.value}</b><span>${s.label}</span></div></div>`).join('');
 </script>
