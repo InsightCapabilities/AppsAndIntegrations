@@ -396,7 +396,15 @@ const csHtml=relStories.length?`<div class="section-block" style="margin-top:10p
 document.getElementById('detailMain').innerHTML=`<div class="detail-breadcrumb"><span class="bc-link" onclick="goToCapability('${gKey}','${Object.keys(g.capabilities)[0]}')">${g.label}</span><span class="bc-sep">/</span><span class="bc-current">${c.label}</span></div><div class="detail-top"><div><h2>${c.label}</h2><p class="tagline" style="color:${c.color}">${c.tagline}</p><p class="desc">${c.desc}</p></div><div class="glyph-box" style="background:${c.bg};color:${c.color}">${ICONS[c.icon].replace('width="20" height="20"','width="30" height="30"')}</div></div><div class="section-block" style="margin-top:26px;"><p class="section-label">Key Capabilities</p><div class="detail-features">${fh}</div></div><div class="two-col-row section-block"><div><p class="section-label">Tech Stack</p><div class="tech-grid">${th}</div></div><div><p class="section-label">Why Choose Us</p><div class="why-panel"><ul class="check-list">${wh}</ul></div></div></div>${csHtml}`;}
 
 /* ===== SUCCESS STORIES with PPT links and capability tags ===== */
-const pptIcon=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`;
+const pptIcon=`<svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <image
+    href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Microsoft_Office_PowerPoint_%282019%E2%80%932025%29.svg/330px-Microsoft_Office_PowerPoint_%282019%E2%80%932025%29.svg.png"
+    x="0"
+    y="0"
+    width="30"
+    height="30"
+  />
+</svg>`;
 const SP_BASE='https://insightonlineind.sharepoint.com/:p:/r/sites/Accelerators/Apps%20%20Integration%20%20Success%20Stories/';
 const stories=[
 {icon:'layers',color:'#a78bfa',bg:'rgba(88,40,115,0.2)',title:'Legacy .NET Modernization',desc:'Modernized a legacy .NET monolith into containerized microservices on AKS, reducing deployment time by 70%.',tag:'Application Modernization',caps:['appdev/appmod'],pptUrl:'https://insightonlineind.sharepoint.com/:p:/r/sites/Accelerators/Apps%20%20Integration%20%20Success%20Stories/NET%20Modernization%20to%20Power%20Platform.pptx?d=wce948dfeec1147739f8a43ae35cf196b&csf=1&web=1&e=NcsjTl'},
